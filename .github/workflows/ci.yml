@@ -1,0 +1,31 @@
+name: Drone Model Project CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Check file existence
+      run: |
+        test -f Labeled_Quadcopter.FCStd
+        test -f README.md
+        test -f INSTALLATION.md
+        test -f TECHNICAL_DETAILS.md
+        test -f CHANGELOG.md
+        test -f CONTRIBUTING.md
+        test -f LICENSE
+
+    - name: Validate Markdown files
+      uses: actionshub/markdownlint@main
+
+    - name: Check License
+      run: grep -q "MIT License" LICENSE
+
+# Optional: Add FreeCAD validation if possible
